@@ -1,0 +1,1 @@
+echo haha $1
