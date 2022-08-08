@@ -1,38 +1,30 @@
 MOCK_STATE="$PWD/.mocker.state"
-WORK_DIR=~/.mocker/tmp/ns
+MOCK_DIR=~/.mocker/tmp/ns
 
 # need exec after create ns namespace
 create() {
   id=$1
   # instead of rely on pid, we use bind mount filesystem as id
-  touch $WORK_DIR/{$id-mnt,$id-pid}
-  echo "ip netns exec $id \
-    unshare \
-    --pid=$WORK_DIR/$id-pid \
-    --mount=$WORK_DIR/$id-mnt \
-    --fork \
-    --mount-proc \
-    bash"
+  touch $MOCK_DIR/{$id-mnt,$id-pid}
   $(ip netns exec $id \
     unshare \
-    --pid=$WORK_DIR/$id-pid \
-    --mount=$WORK_DIR/$id-mnt \
+    --pid=$MOCK_DIR/$id-pid \
+    --mount=$MOCK_DIR/$id-mnt \
     --fork \
     --mount-proc \
-    bash)&
+    tail -f /dev/null) &
 }
 
 exec() {
   id=$1
   nsenter \
-    --pid=$WORK_DIR/$id-pid \
-    --mount=$WORK_DIR/$id-mnt \
-    bash
+    --pid=$MOCK_DIR/$id-pid \
+    --mount=$MOCK_DIR/$id-mnt
 }
 
 delete() {
   id=$1
-  umount $WORK_DIR/{$id-mnt,$id-pid}
+  umount $MOCK_DIR/{$id-mnt,$id-pid}
 }
 
 demo() {

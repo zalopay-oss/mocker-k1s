@@ -2,10 +2,10 @@ set -e
 # prepare state file
 MOCK_STATE="$PWD/.mocker.state"
 # prepare workspace
-WORK_DIR=~/.mocker/tmp/ns
-mkdir -p $WORK_DIR
-mount --bind $WORK_DIR $WORK_DIR
-mount --make-private $WORK_DIR
+MOCK_DIR=~/.mocker/tmp/ns
+mkdir -p $MOCK_DIR
+mount --bind $MOCK_DIR $MOCK_DIR
+mount --make-private $MOCK_DIR
 
 ps() {
   cat $MOCK_STATE
