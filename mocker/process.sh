@@ -6,20 +6,19 @@ create() {
   id=$1
   # instead of rely on pid, we use bind mount filesystem as id
   touch $MOCK_DIR/{$id-mnt,$id-pid}
-  $(ip netns exec $id \
-    unshare \
+  (unshare \
     --pid=$MOCK_DIR/$id-pid \
     --mount=$MOCK_DIR/$id-mnt \
     --fork \
     --mount-proc \
-    tail -f /dev/null) &
+    tail -f /dev/null)&
+    # ip netns exec $id tail -f /dev/null) &
 }
 
 exec() {
   id=$1
-  nsenter \
-    --pid=$MOCK_DIR/$id-pid \
-    --mount=$MOCK_DIR/$id-mnt
+  # ip netns exec $id 
+  nsenter --pid=$MOCK_DIR/$id-pid --mount=$MOCK_DIR/$id-mnt
 }
 
 delete() {
