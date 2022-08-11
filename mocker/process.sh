@@ -5,10 +5,12 @@ MOCK_DIR=~/.mocker/tmp/ns
 create() {
   id=$1
   # instead of rely on pid, we use bind mount filesystem as id
+  # /var/run/netns is default folder of netns when exec "ip netns add"
   touch $MOCK_DIR/{$id-mnt,$id-pid}
   (unshare \
     --pid=$MOCK_DIR/$id-pid \
     --mount=$MOCK_DIR/$id-mnt \
+    --net=/var/run/netns/$id-net \
     --fork \
     --mount-proc \
     tail -f /dev/null)&
@@ -18,7 +20,7 @@ create() {
 exec() {
   id=$1
   # ip netns exec $id 
-  nsenter --pid=$MOCK_DIR/$id-pid --mount=$MOCK_DIR/$id-mnt
+  nsenter --pid=$MOCK_DIR/$id-pid --mount=$MOCK_DIR/$id-mnt --net=/var/run/netns/$id-net
 }
 
 delete() {
