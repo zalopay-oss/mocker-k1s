@@ -62,3 +62,7 @@ tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      
 tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      404/systemd-resolve 
 tcp6       0      0 :::22                   :::*                    LISTEN      642/sshd: /usr/sbin 
 ```
+
+## Next feature
+- Mockerfile
+- Nat port from host to container (require for k1s)
