@@ -11,7 +11,7 @@ ls() {
 init() {
   ip link add v-net-0 type bridge
   ip link set dev v-net-0 up
-  ip addr add 10.0.0.200/24 dev v-net-0
+  ip addr add 10.0.0.1/24 dev v-net-0
   echo "init v-net-0 bridge" | cowsay
 }
 
@@ -24,7 +24,7 @@ create() {
   ip link add $id-veth type veth peer name $id-veth-br
   ip link set $id-veth netns $id-net
   ip link set $id-veth-br master v-net-0
-  ip -n $id-net addr add $ip dev $id-veth
+  ip -n $id-net addr add $ip/24 dev $id-veth
   ip -n $id-net link set $id-veth up
   ip link set $id-veth-br up
 }
