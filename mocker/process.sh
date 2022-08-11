@@ -4,13 +4,15 @@ MOCK_DIR=~/.mocker/tmp/ns
 # need exec after create ns namespace
 create() {
   id=$1
+  ip=$2
   # instead of rely on pid, we use bind mount filesystem as id
   # /var/run/netns is default folder of netns when exec "ip netns add"
+  # /var/www/html/index.nginx-debian.html
   touch $MOCK_DIR/{$id-mnt,$id-pid}
-  (unshare \
+  # execute unshare process under netns avoid persistent issue when using parameter --net
+  (ip netns exec $id-net unshare \
     --pid=$MOCK_DIR/$id-pid \
     --mount=$MOCK_DIR/$id-mnt \
-    --net=/var/run/netns/$id-net \
     --fork \
     --mount-proc \
     tail -f /dev/null)&
@@ -19,13 +21,23 @@ create() {
 
 exec() {
   id=$1
-  # ip netns exec $id 
-  nsenter --pid=$MOCK_DIR/$id-pid --mount=$MOCK_DIR/$id-mnt --net=/var/run/netns/$id-net
+  ip netns exec $id-net bash
 }
 
 delete() {
   id=$1
   umount $MOCK_DIR/{$id-mnt,$id-pid}
+}
+
+inspect() {
+  id=$1
+
+  echo "[INFO]: list process running in $id"
+  netns=$id-net
+  find -L /proc/[1-9]*/task/*/ns/net -samefile /run/netns/"$netns" | cut -d/ -f5
+  echo
+  echo "[INFO]: network info"
+  ip netns exec $netns ip addr
 }
 
 demo() {
@@ -50,4 +62,5 @@ demo() {
 case $1 in
   create) "$@"; exit;;
   exec) "$@"; exit;;
+  inspect) "$@"; exit;;
 esac

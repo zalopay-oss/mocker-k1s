@@ -18,7 +18,7 @@ run() {
   ./network.sh create $id $ip
   ./process.sh create $id
   ./state.sh create $id
-  echo "Success create $id" | cowsay -e oO
+  echo "Success create $id, ip: $ip" | cowsay -e oO
 }
 
 rm() {
@@ -31,6 +31,7 @@ rm() {
 
 exec() {
   id=$1
+  echo "exec $id" | cowsay -e ..
   ./process.sh exec $id
 }
 

@@ -104,4 +104,5 @@ case $1 in
   create) "$@"; exit;;
   ls) "$@"; exit;;
   delete) "$@"; exit;;
+  init) "$@"; exit;;
 esac
