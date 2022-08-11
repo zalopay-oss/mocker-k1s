@@ -3,7 +3,7 @@ MOCK_STATE="$PWD/.mocker.state"
 get_next_ip() {
   ip=$(tail -1 $MOCK_STATE | awk '{print $2}')
   if [ ! $ip ]; then                      
-    ip="10.0.0.0"
+    ip="10.0.0.5"
   else
     IFS='.' read -ra ipnums <<<"$ip"
     last=ipnums[3]
@@ -38,4 +38,5 @@ case $1 in
   create) "$@"; exit;;
   validate_id) "$@"; exit;;
   delete) "$@"; exit;;
+  get_next_ip) "$@"; exit;;
 esac

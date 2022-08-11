@@ -13,8 +13,9 @@ ps() {
 
 run() {
   id=$1
+  ip=$(./state.sh get_next_ip)
   ./state.sh validate_id $id
-  ./network.sh create $id
+  ./network.sh create $id $ip
   ./process.sh create $id
   ./state.sh create $id
   echo "Success create $id" | cowsay -e oO
