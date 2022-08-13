@@ -3,6 +3,9 @@
  
 ## Setup env for Mocker
 ```bash
+$ apt install diff
+$ apt install cowsay
+$ apt install base64
 $ ./network.sh init
 ```
 

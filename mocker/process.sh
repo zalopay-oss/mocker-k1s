@@ -19,6 +19,18 @@ create() {
     # ip netns exec $id tail -f /dev/null) &
 }
 
+start() {
+  # todo: merge with create function
+  # execute after create function
+  id=$1
+  image_name=$2
+  cmd=$3
+  # exec to container
+    # export ENV container workspace
+    # copy image cache layer to container workspace - ./network.sh sync_container_workspace
+    # execute cmd in background mode
+}
+
 exec() {
   id=$1
   ip netns exec $id-net bash
