@@ -5,18 +5,20 @@ MOCK_DIR=~/.mocker/tmp/ns
 create() {
   id=$1
   ip=$2
-  echo "touch $MOCK_DIR/{$id-mnt,$id-pid}"
-  touch $MOCK_DIR/{$id-mnt,$id-pid}
+  touch $MOCK_DIR/$id-pid
+  
+  # debug
+  # echo "ip netns add $id-net"
+  # ip netns add $id-net
+
   # execute unshare process under netns avoid persistent issue when using parameter --net
-  echo "ip netns add $id-net"
-  ip netns add $id-net
-  unshare \
+  (unshare \
     --pid=$MOCK_DIR/$id-pid \
     --mount \
     --net=/var/run/netns/$id-net \
     --fork \
     --mount-proc \
-    bash
+    tail -f /dev/null)&
 }
 
 start() {
