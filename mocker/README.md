@@ -1,6 +1,30 @@
 # Mocker v1.0.0
 > Mocker is a container engine will replace docker in future
  
+## Test cript
+> https://asciinema.org/a/tiwFbNshFWsNg4yEmnQ24gMys
+```bash
+cd /root/mocker-k1s/mocker/test/go-backend-1
+ll
+cat Mockerfile
+cd /root/mocker-k1s/mocker
+mocker images
+mocker build go-backend /root/mocker-k1s/mocker/test/go-backend-1/Mockerfile
+mocker ps
+mocker run go200 go-backend
+mocker exec go200
+cd /root/workspace
+ls -la
+cat index.html
+WORK_DIR=$PWD ./go-backend-linux-amd64 &
+netstat -lnpt
+curl 0.0.0.0:10000
+exit
+netstat -lnpt
+mocker ps
+curl 0.0.0.0:10000
+```
+
 ## Setup env for Mocker
 ```bash
 $ apt install tr

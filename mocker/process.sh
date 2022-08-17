@@ -32,7 +32,7 @@ mount_workspace() {
   mkdir -p $container_path
   
   exec $id mount --bind $host_path $container_path
-  echo "exec $id cp -R $MOCK_LAYER/$image/* $container_path"
+  # echo "exec $id cp -R $MOCK_LAYER/$image/* $container_path"
   exec $id cp -R $MOCK_LAYER/$image/* $container_path
 }
 

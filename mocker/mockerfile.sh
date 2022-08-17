@@ -73,6 +73,7 @@ create_cache_layer() {
 }
 
 images() {
+  mkdir -p $MOCK_LAYER
   ls -la $MOCK_LAYER
 }
 

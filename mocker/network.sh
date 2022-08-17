@@ -31,12 +31,15 @@ link() {
   # echo "id $id, ip $ip, nsenter -t $pid -a ifconfig lo up"
   nsenter -t $pid -a ifconfig lo up
   # create veth and map netns to bridge
+  # echo "ip link add $id-veth type veth peer name $id-veth-br"
   ip link add $id-veth type veth peer name $id-veth-br
   ip link set $id-veth netns $id-net
+  # echo "ip link set $id-veth-br master v-net-0"
   ip link set $id-veth-br master v-net-0
   nsenter -t $pid -a ip addr add $ip/24 dev $id-veth
   # echo "nsenter -t $pid -a link set $id-veth up"
   nsenter -t $pid -a ip link set $id-veth up
+  # echo "ip link set $id-veth-br up"
   # echo "ip link set $id-veth-br up"
   ip link set $id-veth-br up
 }
