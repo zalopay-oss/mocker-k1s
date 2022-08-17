@@ -5,18 +5,18 @@ MOCK_DIR=~/.mocker/tmp/ns
 create() {
   id=$1
   ip=$2
-  # instead of rely on pid, we use bind mount filesystem as id
-  # /var/run/netns is default folder of netns when exec "ip netns add"
-  # /var/www/html/index.nginx-debian.html
+  echo "touch $MOCK_DIR/{$id-mnt,$id-pid}"
   touch $MOCK_DIR/{$id-mnt,$id-pid}
   # execute unshare process under netns avoid persistent issue when using parameter --net
-  (ip netns exec $id-net unshare \
+  echo "ip netns add $id-net"
+  ip netns add $id-net
+  unshare \
     --pid=$MOCK_DIR/$id-pid \
-    --mount=$MOCK_DIR/$id-mnt \
+    --mount \
+    --net=/var/run/netns/$id-net \
     --fork \
     --mount-proc \
-    tail -f /dev/null)&
-    # ip netns exec $id tail -f /dev/null) &
+    bash
 }
 
 start() {
@@ -33,7 +33,9 @@ start() {
 
 exec() {
   id=$1
-  ip netns exec $id-net bash
+  unshare_pid=$(lsns | grep "unshare --pid=/root/.mocker/tmp/ns/$id-pid --mount" | awk '{print $4}' | tail -1)
+  bash_pid=$(pgrep -P $unshare_pid)
+  nsenter -t $bash_pid -a
 }
 
 delete() {
