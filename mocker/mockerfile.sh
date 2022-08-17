@@ -1,5 +1,5 @@
 set -e
-MOCK_LAYER=~/.mocker/layer
+MOCK_LAYER=/root/.mocker/layer
 
 build() {
   image_name=$1
@@ -11,10 +11,15 @@ build() {
 
   # create cache layer base on mockerfile
   filename=$file_path
+  last_layer=""
   while read line; do 
     echo "$line"
-    create_cache_layer "$line" ""
+    last_layer="$(create_cache_layer "$line")"
+    # create_cache_layer "$line"
   done < "$filename"
+
+  ln -s $last_layer $MOCK_LAYER/$image_name
+  tree $MOCK_LAYER
 }
 
 # move cache layer to container workspace ~/.MOCKER_DIR/container_workspace/
@@ -23,9 +28,7 @@ sync_container_workspace() {
   image_name=$2
 }
 
-test=0
 create_cache_layer() {
-  ((test+=1))
   cmd=$1
   previous_hash=$2
 
@@ -34,23 +37,26 @@ create_cache_layer() {
   
   # calculate hash
   mix="$previous_hash-$cmd"
-  new_hash="$(echo \"$mix\" | base64)"
+  new_hash="$(echo \"$mix\" | base64 | tr -d -c \".[:alnum:]\")"
   short_hash="${new_hash:0:200}"
   # echo $short_hash
 
   # execute
   executable_cmd=$(echo "${cmd:4}")
+  # echo "[INFO]: RUN ${executable_cmd}"
   eval "$executable_cmd"
-  echo "hello" > $test.init
+  # echo
 
   # save cache layer
   mkdir -p "$MOCK_LAYER/$short_hash"
   # echo "cp -R $MOCK_LAYER/builder_space/* $MOCK_LAYER/$short_hash"
   cp -R $MOCK_LAYER/builder_space/* "$MOCK_LAYER/$short_hash"
 
-  echo "[info]: shorthash: $short_hash"
-  echo "[info]: executable_cmd: $executable_cmd"
-  echo "[info]: tree "$MOCK_LAYER""
+  echo "$MOCK_LAYER/$short_hash"
+
+  # echo "[info]: shorthash: $short_hash"
+  # echo "[info]: executable_cmd: $executable_cmd"
+  # echo "[info]: tree "$MOCK_LAYER""
 
   # todo: using diff to detect cache layer change
   # scan new file
@@ -58,8 +64,8 @@ create_cache_layer() {
   # scan change file
   
   
-  pwd
-  tree "$MOCK_LAYER"
+  # pwd
+  # tree "$MOCK_LAYER"
   # ex
   
 
