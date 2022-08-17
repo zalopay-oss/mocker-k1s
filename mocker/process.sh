@@ -1,15 +1,13 @@
 MOCK_STATE="$PWD/.mocker.state"
 MOCK_DIR=~/.mocker/tmp/ns
+MOCK_WORKSPACE=~/.mocker/workspace
+CONTAINER_WORKSPACE="/root/workspace"
 
 # need exec after create ns namespace
 create() {
   id=$1
   ip=$2
   touch $MOCK_DIR/$id-pid
-  
-  # debug
-  # echo "ip netns add $id-net"
-  # ip netns add $id-net
 
   # execute unshare process under netns avoid persistent issue when using parameter --net
   (unshare \
@@ -19,6 +17,18 @@ create() {
     --fork \
     --mount-proc \
     tail -f /dev/null)&
+
+    mount_workspace $id
+}
+
+mount_workspace() {
+  id=$1
+  host_path="$MOCK_WORKSPACE/$id"
+  container_path=$CONTAINER_WORKSPACE
+  mkdir -p $host_path
+  mkdir -p $container_path
+  
+  exec $id mount --bind $host_path $container_path
 }
 
 start() {
@@ -37,7 +47,7 @@ exec() {
   id=$1
   unshare_pid=$(lsns | grep "unshare --pid=/root/.mocker/tmp/ns/$id-pid --mount" | awk '{print $4}' | tail -1)
   bash_pid=$(pgrep -P $unshare_pid)
-  nsenter -t $bash_pid -a
+  nsenter -t $bash_pid -a "${@:2}"
 }
 
 delete() {
@@ -79,4 +89,5 @@ case $1 in
   create) "$@"; exit;;
   exec) "$@"; exit;;
   inspect) "$@"; exit;;
+  mount_workspace) "$@"; exit;;
 esac
