@@ -38,9 +38,18 @@ exec() {
   ./process.sh exec $id
 }
 
+build() {
+  image_name=$1
+  file_path=$2
+
+  ./mockerfile.sh build $image_name $file_path
+  echo "Build $image_name success" | cowsay -e oO
+}
+
 case $1 in
   ps) "$@"; exit;;
   run) "$@"; exit;;
   rm) "$@"; exit;;
   exec) "$@"; exit;;
+  build) "$@"; exit;;
 esac
