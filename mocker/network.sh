@@ -12,6 +12,7 @@ init() {
   ip link add v-net-0 type bridge
   ip link set dev v-net-0 up
   ip addr add 10.0.0.1/24 dev v-net-0
+  # todo: move echo to cmd
   echo "init v-net-0 bridge" | cowsay
 }
 
@@ -19,13 +20,24 @@ create() {
   id=$1
   ip=$2
   ip netns add $id-net
-  ip netns exec $id-net ifconfig lo up
+}
+
+# need link after create mount-ns
+link() {
+  id=$1
+  ip=$2
+  pid=$3
+
+  # echo "id $id, ip $ip, nsenter -t $pid -a ifconfig lo up"
+  nsenter -t $pid -a ifconfig lo up
   # create veth and map netns to bridge
   ip link add $id-veth type veth peer name $id-veth-br
   ip link set $id-veth netns $id-net
   ip link set $id-veth-br master v-net-0
-  ip -n $id-net addr add $ip/24 dev $id-veth
-  ip -n $id-net link set $id-veth up
+  nsenter -t $pid -a ip addr add $ip/24 dev $id-veth
+  # echo "nsenter -t $pid -a link set $id-veth up"
+  nsenter -t $pid -a ip link set $id-veth up
+  # echo "ip link set $id-veth-br up"
   ip link set $id-veth-br up
 }
 
@@ -105,4 +117,5 @@ case $1 in
   ls) "$@"; exit;;
   delete) "$@"; exit;;
   init) "$@"; exit;;
+  link) "$@"; exit;;
 esac

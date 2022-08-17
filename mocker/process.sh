@@ -43,6 +43,13 @@ start() {
     # execute cmd in background mode
 }
 
+get_bash_pid() {
+  id=$1
+  unshare_pid=$(lsns | grep "unshare --pid=/root/.mocker/tmp/ns/$id-pid --mount" | awk '{print $4}' | tail -1)
+  bash_pid=$(pgrep -P $unshare_pid)
+  echo $bash_pid
+}
+
 exec() {
   id=$1
   unshare_pid=$(lsns | grep "unshare --pid=/root/.mocker/tmp/ns/$id-pid --mount" | awk '{print $4}' | tail -1)
@@ -90,4 +97,5 @@ case $1 in
   exec) "$@"; exit;;
   inspect) "$@"; exit;;
   mount_workspace) "$@"; exit;;
+  get_bash_pid) "$@"; exit;;
 esac
