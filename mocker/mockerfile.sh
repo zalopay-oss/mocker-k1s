@@ -72,6 +72,11 @@ create_cache_layer() {
   echo "$MOCK_LAYER/$short_hash"
 }
 
+images() {
+  ls -la $MOCK_LAYER
+}
+
 case $1 in
   build) "$@"; exit;;
+  images) "$@"; exit;;
 esac

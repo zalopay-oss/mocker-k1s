@@ -13,9 +13,11 @@ ps() {
 
 run() {
   id=$1
+  image=$2
+
   ./state.sh validate_id $id
   ./network.sh create $id
-  ./process.sh create $id
+  ./process.sh create $id $image
   ip=$(./state.sh get_next_ip)
   pid=$(./process.sh get_bash_pid $id)
   echo "ip $id, ip $ip, pid $pid"
@@ -43,7 +45,12 @@ build() {
   file_path=$2
 
   ./mockerfile.sh build $image_name $file_path
-  echo "Build $image_name success" | cowsay -e oO
+  echo "Build image $image_name success
+[Warning] This alpha feature don't implement diff logic" | cowsay -n -e "><"
+}
+
+images() {
+  ./mockerfile.sh images
 }
 
 case $1 in
@@ -52,4 +59,5 @@ case $1 in
   rm) "$@"; exit;;
   exec) "$@"; exit;;
   build) "$@"; exit;;
+  images) "$@"; exit;;
 esac

@@ -2,11 +2,13 @@ MOCK_STATE="$PWD/.mocker.state"
 MOCK_DIR=~/.mocker/tmp/ns
 MOCK_WORKSPACE=~/.mocker/workspace
 CONTAINER_WORKSPACE="/root/workspace"
+# todo: duplicate this variable, source trust need in dockerfile
+MOCK_LAYER=/root/.mocker/layer
 
 # need exec after create ns namespace
 create() {
   id=$1
-  ip=$2
+  image=$2
   touch $MOCK_DIR/$id-pid
 
   # execute unshare process under netns avoid persistent issue when using parameter --net
@@ -18,17 +20,20 @@ create() {
     --mount-proc \
     tail -f /dev/null)&
 
-    mount_workspace $id
+    mount_workspace $id $image
 }
 
 mount_workspace() {
   id=$1
+  image=$2
   host_path="$MOCK_WORKSPACE/$id"
   container_path=$CONTAINER_WORKSPACE
   mkdir -p $host_path
   mkdir -p $container_path
   
   exec $id mount --bind $host_path $container_path
+  echo "exec $id cp -R $MOCK_LAYER/$image/* $container_path"
+  exec $id cp -R $MOCK_LAYER/$image/* $container_path
 }
 
 start() {
