@@ -23,7 +23,9 @@ sync_container_workspace() {
   image_name=$2
 }
 
+test=0
 create_cache_layer() {
+  ((test+=1))
   cmd=$1
   previous_hash=$2
 
@@ -39,6 +41,7 @@ create_cache_layer() {
   # execute
   executable_cmd=$(echo "${cmd:4}")
   eval "$executable_cmd"
+  echo "hello" > $test.init
 
   # save cache layer
   mkdir -p "$MOCK_LAYER/$short_hash"
@@ -50,6 +53,9 @@ create_cache_layer() {
   echo "[info]: tree "$MOCK_LAYER""
 
   # todo: using diff to detect cache layer change
+  # scan new file
+  # scan delete file
+  # scan change file
   
   
   pwd

@@ -1,4 +1,5 @@
 RUN wget https://github.com/dinhanhhuy/go-backend/releases/download/1.0.0/go-backend-linux-amd64
 RUN chmod +x go-backend-linux-amd64
 RUN echo 'this is go-backend-1' > /root/.mocker/layer/builder_space/index.html
+RUN echo 'this is go-backend-2' >> /root/.mocker/layer/builder_space/index.html
 RUN ls -la
