@@ -2,7 +2,7 @@
 > Mocker is a container engine will replace docker in future
  
 ## Test cript
-> https://asciinema.org/a/tiwFbNshFWsNg4yEmnQ24gMys
+> https://asciinema.org/a/3PTd7SxQN9OW2lfaYRT0ktKBd
 ```bash
 cd /root/mocker-k1s/mocker/test/go-backend-1
 ll
