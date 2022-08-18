@@ -23,7 +23,7 @@ build() {
       mkdir -p $MOCK_LAYER/builder_space
       cp $MOCK_LAYER/$short_hash/* $MOCK_LAYER/builder_space
     else
-      echo "[INFO]: buding $short_hash"
+      echo "[INFO]: buding $line"
       create_cache_layer "$line" "$short_hash"
     fi
     last_layer=$short_hash
@@ -48,7 +48,7 @@ get_short_hash() {
   
   # calculate hash
   mix="$previous_hash-$cmd"
-  new_hash="$(echo \"$mix\" | base64 | tr -d -c \".[:alnum:]\")"
+  new_hash="$(echo -n \"$mix\" | md5sum | awk '{print $1}')"
   short_hash="${new_hash:0:200}"
   echo $short_hash
 }
@@ -61,20 +61,22 @@ create_cache_layer() {
   
   cmd=$1
   short_hash=$2
-  # echo "short_hash $short_hash"
 
-  # execute
-  executable_cmd=$(echo "${cmd:4}")
-  # echo "[INFO]: RUN ${executable_cmd}"
-  eval "$executable_cmd"
-  # echo
+  filter_cmd=$(echo "$cmd" | grep "^CMD .*"  || [[ $? == 1 ]])
+
+  # is not cmd
+  if [ -z "${filter_cmd}" ]; then
+    # execute
+    executable_cmd=$(echo "${cmd:4}")
+    eval "$executable_cmd"
+  else
+    echo "${cmd:4}" > entry.sh
+    chmod +x entry.sh
+  fi
 
   # save cache layer
   mkdir -p "$MOCK_LAYER/$short_hash"
-  # echo "cp -R $MOCK_LAYER/builder_space/* $MOCK_LAYER/$short_hash"
   cp -R $MOCK_LAYER/builder_space/* "$MOCK_LAYER/$short_hash" || true
-
-  echo "$MOCK_LAYER/$short_hash"
 }
 
 images() {

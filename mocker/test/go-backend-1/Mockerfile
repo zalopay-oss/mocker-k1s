@@ -3,3 +3,4 @@ RUN echo 'this is go-backend 1000' > /root/.mocker/layer/builder_space/index.htm
 RUN chmod +x go-backend-linux-amd64
 RUN ls -la
 RUN ls -la
+CMD ID=go-backend-1 WORK_DIR=/root/workspace ./go-backend-linux-amd64
