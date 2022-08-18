@@ -18,6 +18,10 @@ build() {
     if [ -d "$MOCK_LAYER/$short_hash" ]
     then
       echo "[CACHED] $short_hash" | grep --color=always -z 'CACHED'
+      # create builder space with cache
+      rm -rf $MOCK_LAYER/builder_space
+      mkdir -p $MOCK_LAYER/builder_space
+      cp $MOCK_LAYER/$short_hash/* $MOCK_LAYER/builder_space
     else
       echo "[INFO]: buding $short_hash"
       create_cache_layer "$line" "$short_hash"
@@ -28,6 +32,7 @@ build() {
   # clean ln avoid link many time
   rm -rf $MOCK_LAYER/$image_name
   ln -s $last_layer $MOCK_LAYER/$image_name
+  rm -rf $MOCK_LAYER/builder_space
   tree $MOCK_LAYER
 }
 
@@ -67,14 +72,14 @@ create_cache_layer() {
   # save cache layer
   mkdir -p "$MOCK_LAYER/$short_hash"
   # echo "cp -R $MOCK_LAYER/builder_space/* $MOCK_LAYER/$short_hash"
-  cp -R $MOCK_LAYER/builder_space/* "$MOCK_LAYER/$short_hash"
+  cp -R $MOCK_LAYER/builder_space/* "$MOCK_LAYER/$short_hash" || true
 
   echo "$MOCK_LAYER/$short_hash"
 }
 
 images() {
   mkdir -p $MOCK_LAYER
-  ls -la $MOCK_LAYER
+  tree $MOCK_LAYER
 }
 
 case $1 in
