@@ -20,7 +20,13 @@ create() {
     --mount-proc \
     tail -f /dev/null)&
 
-    mount_workspace $id $image
+  mount_workspace $id $image
+  start_entry $id
+}
+
+start_entry() {
+  id=$1
+  exec $id "$CONTAINER_WORKSPACE/entry.sh" &
 }
 
 mount_workspace() {

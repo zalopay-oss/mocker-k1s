@@ -4,4 +4,4 @@ RUN echo 'this is go-backend 2000' > /root/.mocker/layer/builder_space/index.htm
 RUN echo 'this is go-backend 2000' > /root/.mocker/layer/builder_space/config-v2.config
 RUN ls -la
 RUN ls -la
-CMD ID=go-backend-2 WORK_DIR=/root/workspace ./go-backend-linux-amd64
+CMD ID=go-backend-2 WORK_DIR=/root/workspace /root/workspace/go-backend-linux-amd64
