@@ -2,17 +2,20 @@
 > Mocker is a container engine will replace docker in future
  
 ## Test cript
-> https://asciinema.org/a/3PTd7SxQN9OW2lfaYRT0ktKBd
+> https://asciinema.org/a/w9yPrjdQhSOGMAvow7n13esB6
 ```bash
+cowsay "First, We gonna test Mocker build feature"
 cd /root/mocker-k1s/mocker/test/go-backend-1
 ll
 cat Mockerfile
 cd /root/mocker-k1s/mocker
 mocker images
 mocker build go-backend /root/mocker-k1s/mocker/test/go-backend-1/Mockerfile
+mocker build go-backend /root/mocker-k1s/mocker/test/go-backend-1/Mockerfile2
+cowsay "Next, We test Mocker start a new container"
 mocker ps
-mocker run go200 go-backend
-mocker exec go200
+mocker run go300 go-backend
+mocker exec go300
 cd /root/workspace
 ls -la
 cat index.html
@@ -20,6 +23,7 @@ WORK_DIR=$PWD ./go-backend-linux-amd64 &
 netstat -lnpt
 curl 0.0.0.0:10000
 exit
+cowsay "After exit the container, we can't see the container PID tree or network listening port"
 netstat -lnpt
 mocker ps
 curl 0.0.0.0:10000
