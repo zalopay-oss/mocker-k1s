@@ -79,7 +79,7 @@ $ mocker images
 |   `-- index.html
 `-- img1 -> 90cb403239851d091015e1e2d98f489b
 ```
-### Run new container
+### Run new container with isolate network
 ```bash
 $ mocker run backend img1
 ip backend, ip 10.0.0.5, pid 3832
