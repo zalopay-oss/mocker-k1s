@@ -11,7 +11,8 @@ yum install tree -y
 yum install coreutils -y
 git clone https://github.com/dinhanhhuy/mocker-k1s.git
 # install hello world backend
+cp -R mocker-k1s/mocker/* /usr/bin
 cp mocker-k1s/mocker/test/go-backend-linux-amd64 /usr/bin
 cd mocker-k1s/mocker
 alias mocker=/root/mocker-k1s/mocker/cmd.sh
-./network.sh init
+network.sh init

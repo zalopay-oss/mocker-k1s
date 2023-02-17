@@ -35,7 +35,7 @@ $ apt install tr
 $ apt install diff
 $ apt install cowsay
 $ apt install base64
-$ ./network.sh init
+$ network.sh init
 ```
 
 ## Create mocker container and play with network
@@ -43,7 +43,7 @@ $ ./network.sh init
 $ cd mocker-k1s/mocker
 
 # run new mocker container
-$ ./cmd.sh run nginx-1
+$ cmd.sh run nginx-1
  _______________________________________
 < Success create nginx-1, ip: 10.0.0.18 >
  ---------------------------------------
@@ -54,7 +54,7 @@ $ ./cmd.sh run nginx-1
                 ||     ||
 
 # enter container and check network
-$ ./cmd.sh exec nginx-1
+$ cmd.sh exec nginx-1
  ______________
 < exec nginx-1 >
  --------------
