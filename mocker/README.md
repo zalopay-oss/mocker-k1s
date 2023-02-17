@@ -1,5 +1,5 @@
 # Mocker v1.0.0
-> Mocker is a container engine will replace docker in future
+> Playful container engine to replace docker in future
  
 ## Install on Centos
 ```bash
