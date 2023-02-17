@@ -1,5 +1,5 @@
 set -e
-MOCK_STATE="$PWD/.mocker.state"
+MOCK_STATE="~/.mocker.state"
 MOCK_DIR=~/.mocker/tmp/ns
 
 # need exec after create ns namespace

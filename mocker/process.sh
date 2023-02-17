@@ -1,4 +1,4 @@
-MOCK_STATE="$PWD/.mocker.state"
+MOCK_STATE="~/.mocker.state"
 MOCK_DIR=~/.mocker/tmp/ns
 MOCK_WORKSPACE=~/.mocker/workspace
 CONTAINER_WORKSPACE="/root/workspace"

@@ -1,6 +1,6 @@
 set -e
 # prepare state file
-MOCK_STATE="$PWD/.mocker.state"
+MOCK_STATE="~/.mocker.state"
 # prepare workspace
 MOCK_DIR=~/.mocker/tmp/ns
 mkdir -p $MOCK_DIR
@@ -45,8 +45,7 @@ build() {
   file_path=$2
 
   mockerfile.sh build $image_name $file_path
-  echo "Build image $image_name success
-[Warning] This alpha feature don't implement diff logic" | cowsay -n -e "><"
+  echo "Build image $image_name success" | cowsay -n -e "><"
 }
 
 images() {
