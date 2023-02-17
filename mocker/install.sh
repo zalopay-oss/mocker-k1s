@@ -13,6 +13,4 @@ git clone https://github.com/dinhanhhuy/mocker-k1s.git
 # install hello world backend
 cp -R mocker-k1s/mocker/* /usr/bin
 # install test binary
-cp mocker-k1s/mocker/test/go-backend-linux-amd64 /usr/bin
-cd mocker-k1s/mocker
 network.sh init
