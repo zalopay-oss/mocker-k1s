@@ -18,7 +18,7 @@ RUN ls -la
 RUN ls -la
 ```
 
-### build image from Mockerfile
+### Build image from Mockerfile
 ```bash
 $ mocker build img1 golang1.Mockerfile
 ...
@@ -56,7 +56,7 @@ $ mocker build img1 golang1.Mockerfile
                 ||----w |
                 ||     ||
 ```
-### list all images
+### List all images
 ```bash
 $ mocker images
 /root/.mocker/layer
@@ -79,7 +79,7 @@ $ mocker images
 |   `-- index.html
 `-- img1 -> 90cb403239851d091015e1e2d98f489b
 ```
-### run new container
+### Run new container
 ```bash
 $ mocker run backend img1
 ip backend, ip 10.0.0.5, pid 3832
@@ -93,13 +93,13 @@ ip backend, ip 10.0.0.5, pid 3832
                 ||     ||
 ```
 
-### list container
+### List container
 ```bash
 $ mocker ps
 backend 10.0.0.5
 ```
 
-### test connection
+### Test connection
 container backend running at 10.0.0.5:10000
 ```bash
 $ curl 10.0.0.5:10000
@@ -111,7 +111,7 @@ this is go-backend 1000
 $ netstat -lnpt | grep 10000
 # exit 1
 ```
-### execute to pod and check for network
+### Execute to pod and check for network
 ```bash
 $ mocker exec backend
 ______________
