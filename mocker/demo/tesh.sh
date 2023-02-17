@@ -20,27 +20,33 @@ mocker images
 # container name need to be short
 echo "run new container
 
-mocker run con5 img1" | cowsay
-mocker run con5 img1
+mocker run con6 img1" | cowsay
+mocker run con6 img1
 
-echo "list container" | cowsay
+echo "list container
+
+mocker ps" | cowsay
 mocker ps
 
-IP=$(mocker ps | grep con5 | awk '{print $NF}')
+IP=$(mocker ps | grep con6 | awk '{print $NF}')
 PORT=10000
-echo "container con5 running at $IP:$PORT - 
+echo "container con6 running at $IP:$PORT
+
 curl $IP:$PORT" | cowsay
 curl $IP:$PORT
 
-echo "Verify the host don't listen on $PORT - 
+echo "Verify the host don't listen on $PORT
+
 netstat -lnpt | grep $PORT" | cowsay
 netstat -lnpt | grep $PORT || true
 
-echo "execute to pod and check for network - 
-mocker exec con5" | cowsay
-mocker exec con5
+echo "execute to pod and check for network
 
-echo "check network inside container - 
+mocker exec con6" | cowsay
+mocker exec con6
+
+echo "check network inside container
+
 netstat -lnpt | grep $PORT" | cowsay
 netstat -lnpt | grep $PORT
 
