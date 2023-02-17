@@ -3,11 +3,11 @@
 set -e
 
 echo "Start installing mocker"
-apt install git
-apt install tr
-apt install diff
-apt install cowsay
-apt install base64
+yum install git
+yum install tr
+yum install diff
+yum install cowsay
+yum install base64
 git clone https://github.com/dinhanhhuy/mocker-k1s.git .
 cd mocker-k1s/mocker
 ./network.sh init
