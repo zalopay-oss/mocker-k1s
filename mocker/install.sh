@@ -3,6 +3,12 @@
 #!/bin/bash
 set -e
 
+# disable warning rollback locale
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_COLLATE=C
+export LC_CTYPE=en_US.UTF-8
+
 echo "Start installing mocker"
 yum install git -y
 yum install cowsay -y
