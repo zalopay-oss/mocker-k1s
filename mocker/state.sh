@@ -1,4 +1,4 @@
-MOCK_STATE="~/.mocker.state"
+MOCK_STATE="/root/.mocker.state"
 
 get_next_ip() {
   ip=$(tail -1 $MOCK_STATE | awk '{print $2}')

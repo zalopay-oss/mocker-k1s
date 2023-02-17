@@ -1,6 +1,6 @@
 set -e
 # prepare state file
-MOCK_STATE="~/.mocker.state"
+MOCK_STATE="/root/.mocker.state"
 # prepare workspace
 MOCK_DIR=~/.mocker/tmp/ns
 mkdir -p $MOCK_DIR
@@ -8,7 +8,7 @@ mount --bind $MOCK_DIR $MOCK_DIR
 mount --make-private $MOCK_DIR
 
 ps() {
-  cat $MOCK_STATE
+  cat $MOCK_STATE > 2&1
 }
 
 run() {
