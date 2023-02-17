@@ -68,7 +68,7 @@ Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
 
 # start nginx in container at port 80
-$ nginx
+$ mocker/test/binary/nginx-1.23.0/nginx/nginx
 $ netstat -lnpt # container network show port 80 is up
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      8934/nginx: master  
