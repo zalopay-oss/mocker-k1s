@@ -50,7 +50,7 @@ build() {
 }
 
 images() {
-  ./mockerfile.sh images
+  mockerfile.sh images
 }
 
 case $1 in
