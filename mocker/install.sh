@@ -1,4 +1,4 @@
-# https://raw.githubusercontent.com/dinhanhhuy/mocker-k1s/main/mocker/install.sh
+# curl https://raw.githubusercontent.com/dinhanhhuy/mocker-k1s/main/mocker/install.sh | bash
 #!/bin/bash
 set -e
 
