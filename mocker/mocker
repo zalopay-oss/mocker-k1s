@@ -8,7 +8,7 @@ mount --bind $MOCK_DIR $MOCK_DIR
 mount --make-private $MOCK_DIR
 
 ps() {
-  cat $MOCK_STATE > 2&1
+  cat $MOCK_STATE
 }
 
 run() {
