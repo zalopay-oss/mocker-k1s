@@ -1,100 +1,126 @@
 # Mocker v1.0.0
 > Mocker is a container engine will replace docker in future
  
-## Test cript
-> https://asciinema.org/a/w9yPrjdQhSOGMAvow7n13esB6
+## Install on Centos
 ```bash
-cowsay "First, We gonna test Mocker build feature"
-cd /root/mocker-k1s/mocker/test/go-backend-1
-ll
-cat Mockerfile
-cd /root/mocker-k1s/mocker
-mocker images
-mocker build go-backend /root/mocker-k1s/mocker/test/go-backend-1/Mockerfile
-mocker build go-backend /root/mocker-k1s/mocker/test/go-backend-1/Mockerfile2
-cowsay "Next, We test Mocker start a new container"
-mocker ps
-mocker run go300 go-backend
-mocker exec go300
-cd /root/workspace
-ls -la
-cat index.html
-WORK_DIR=$PWD ./go-backend-linux-amd64 &
-netstat -lnpt
-curl 0.0.0.0:10000
-exit
-cowsay "After exit the container, we can't see the container PID tree or network listening port"
-netstat -lnpt
-mocker ps
-curl 0.0.0.0:10000
+curl https://raw.githubusercontent.com/dinhanhhuy/mocker-k1s/main/mocker/install.sh | bash
 ```
 
-## Setup env for Mocker
+## Basic usage
+### Demo mocker file
 ```bash
-$ apt install tr
-$ apt install diff
-$ apt install cowsay
-$ apt install base64
-$ network.sh init
+$ cat golang1.Mockerfile
+RUN wget https://github.com/dinhanhhuy/go-backend/releases/download/1.0.0/go-backend-linux-amd64
+RUN chmod +x go-backend-linux-amd64
+RUN echo 'this is go-backend 1000' > /root/.mocker/layer/builder_space/index.html
+RUN ls -la
+RUN ls -la
 ```
 
-## Create mocker container and play with network
+### build image from Mockerfile
 ```bash
-$ cd mocker-k1s/mocker
-
-# run new mocker container
-$ cmd.sh run nginx-1
- _______________________________________
-< Success create nginx-1, ip: 10.0.0.18 >
- ---------------------------------------
+$ mocker build img1 golang1.Mockerfile
+...
+932ace9337a30e1f58841718c2624870
+[INFO]: buding RUN chmod +x go-backend-linux-amd64
+[INFO]: buding RUN echo 'this is go-backend 1000' > /root/.mocker/layer/builder_space/index.html
+[INFO]: buding RUN ls -la
+[INFO]: buding RUN ls -la
+[INFO]: buding CMD ID=go-backend-1 WORK_DIR=/root/workspace /root/workspace/go-backend-linux-amd64
+/root/.mocker/layer
+|-- 2d15f0c52caa33fd679b2fdc8f14f642
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+|-- 90cb403239851d091015e1e2d98f489b
+|   |-- entry.sh
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+|-- 932ace9337a30e1f58841718c2624870
+|   `-- go-backend-linux-amd64
+|-- ba8675a9a669696c12076f6c0b879a7d
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+|-- ddf58290b0367f3f695074b6ecde8985
+|   `-- go-backend-linux-amd64
+|-- f4d1ea5912242d002cc06053b6220342
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+`-- img1 -> 90cb403239851d091015e1e2d98f489b
+ __________________________
+< Build image img1 success >
+ --------------------------
+        \   ^__^
+         \  (><)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+### list all images
+```bash
+$ mocker images
+/root/.mocker/layer
+|-- 2d15f0c52caa33fd679b2fdc8f14f642
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+|-- 90cb403239851d091015e1e2d98f489b
+|   |-- entry.sh
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+|-- 932ace9337a30e1f58841718c2624870
+|   `-- go-backend-linux-amd64
+|-- ba8675a9a669696c12076f6c0b879a7d
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+|-- ddf58290b0367f3f695074b6ecde8985
+|   `-- go-backend-linux-amd64
+|-- f4d1ea5912242d002cc06053b6220342
+|   |-- go-backend-linux-amd64
+|   `-- index.html
+`-- img1 -> 90cb403239851d091015e1e2d98f489b
+```
+### run new container
+```bash
+$ mocker run backend img1
+ip backend, ip 10.0.0.5, pid 3832
+ ___________________________________
+< Success create backend, ip: 10.0.0.5 >
+ -----------------------------------
         \   ^__^
          \  (oO)\_______
             (__)\       )\/\
                 ||----w |
                 ||     ||
+```
 
-# enter container and check network
-$ cmd.sh exec nginx-1
- ______________
-< exec nginx-1 >
- --------------
+### list container
+```bash
+$ mocker ps
+backend 10.0.0.5
+```
+
+### test connection
+container backend running at 10.0.0.5:10000
+```bash
+$ curl 10.0.0.5:10000
+this is go-backend 1000
+```
+
+### Verify the host dont listen on 10000
+```bash
+$ netstat -lnpt | grep 10000
+# exit 1
+```
+### execute to pod and check for network
+```bash
+$ mocker exec backend
+______________
+< exec backend >
+ -------------
         \   ^__^
          \  (..)\_______
             (__)\       )\/\
                 ||----w |
                 ||     ||
-$ netstat -lnpt
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-
-# start nginx in container at port 80
-$ mocker/test/binary/nginx-1.23.0/nginx/nginx
-$ netstat -lnpt # container network show port 80 is up
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
-tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      8934/nginx: master  
-tcp6       0      0 :::80                   :::*                    LISTEN      8934/nginx: master  
-
-# testing nginx in container
-$ curl 10.0.0.18:80
-hello
-
-# exit container
-exit
-
-# testing nginx of container in host
-$ curl 10.0.0.18:80
-hello
-
-# host network don't show port 80
-$ netstat -lnpt
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
-tcp        0      0 127.0.0.1:46095         0.0.0.0:*               LISTEN      1019/node           
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      642/sshd: /usr/sbin 
-tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      404/systemd-resolve 
-tcp6       0      0 :::22                   :::*                    LISTEN      642/sshd: /usr/sbin 
+[root@ip-172-31-20-239 /]# netstat -lnpt | grep 10000
+tcp6       0      0 :::10000                :::*                    LISTEN      5/go-backend-linux-
 ```
-
-## Next feature
-- Mockerfile
-- Nat port from host to container (require for k1s)
