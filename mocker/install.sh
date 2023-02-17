@@ -9,4 +9,5 @@ apt install diff
 apt install cowsay
 apt install base64
 git clone https://github.com/dinhanhhuy/mocker-k1s.git .
+cd mocker-k1s/mocker
 ./network.sh init
