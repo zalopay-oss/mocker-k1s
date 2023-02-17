@@ -2,5 +2,11 @@
 #!/bin/bash
 set -e
 
-echo hello + "$PWD"
-ls -la
+echo "Start installing mocker"
+apt install git
+apt install tr
+apt install diff
+apt install cowsay
+apt install base64
+git clone https://github.com/dinhanhhuy/mocker-k1s.git .
+./network.sh init
