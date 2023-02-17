@@ -1,6 +1,7 @@
 # Mocker v1.0.0
 > Playful container engine to replace docker in future
- 
+## Demo
+[![asciicast](https://asciinema.org/a/uUOjoz0e0oFdWdzFbljZfUATn.svg)](https://asciinema.org/a/uUOjoz0e0oFdWdzFbljZfUATn)
 ## Install on Centos
 ```bash
 curl https://raw.githubusercontent.com/dinhanhhuy/mocker-k1s/main/mocker/install.sh | bash
