@@ -7,7 +7,7 @@ cat golang1.Mockerfile" | cowsay
 cat golang1.Mockerfile
 
 # image name need to be short
-echo "build image `go1` from Mockerfile
+echo "build image from Mockerfile
 
 mocker build img1 golang1.Mockerfile" | cowsay
 mocker build img1 golang1.Mockerfile
