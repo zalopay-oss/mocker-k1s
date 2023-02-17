@@ -6,7 +6,10 @@ set -e
 echo "Start installing mocker"
 yum install git -y
 yum install cowsay -y
-yum install coreutils -y # base64
+# install base64
+yum install coreutils -y
 git clone https://github.com/dinhanhhuy/mocker-k1s.git
+# install hello world backend
+cp mocker-k1s/mocker/test/go-backend-linux-amd64 /usr/bin
 cd mocker-k1s/mocker
 ./network.sh init
