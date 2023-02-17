@@ -12,6 +12,7 @@ ps() {
 }
 
 run() {
+  set -e
   id=$1
   image=$2
 
@@ -27,6 +28,7 @@ run() {
 }
 
 rm() {
+  set -e
   id=$1
   process.sh delete $id
   network.sh delete $id
@@ -35,12 +37,14 @@ rm() {
 }
 
 exec() {
+  set -e
   id=$1
   echo "exec $id" | cowsay -e ..
   process.sh exec $id
 }
 
 build() {
+  set -e
   image_name=$1
   file_path=$2
 
@@ -49,6 +53,7 @@ build() {
 }
 
 images() {
+  set -e
   mockerfile.sh images
 }
 

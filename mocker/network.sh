@@ -9,6 +9,7 @@ ls() {
 }
 
 init() {
+  touch /root/.mocker.state
   ip link add v-net-0 type bridge
   ip link set dev v-net-0 up
   ip addr add 10.0.0.1/24 dev v-net-0
