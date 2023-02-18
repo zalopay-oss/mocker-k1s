@@ -1,6 +1,7 @@
 # Mocker v1.0.0
-> Playful container engine to replace docker in future
+> Playful container engine created under 500 lines bash script
 ## Demo
+Tested with AWS Linux `ami-0f2eac25772cd4e36`
 [![asciicast](https://asciinema.org/a/uUOjoz0e0oFdWdzFbljZfUATn.svg)](https://asciinema.org/a/uUOjoz0e0oFdWdzFbljZfUATn)
 ## Install on Centos
 ```bash
