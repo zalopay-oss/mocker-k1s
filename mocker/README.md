@@ -1,9 +1,9 @@
 # Mocker v1.0.0
 > Playful container engine created by 500 lines bash script
 ## Demo
-Tested with AWS Linux `ami-0f2eac25772cd4e36`
 [![asciicast](https://asciinema.org/a/uUOjoz0e0oFdWdzFbljZfUATn.svg)](https://asciinema.org/a/uUOjoz0e0oFdWdzFbljZfUATn)
 ## Install on Centos
+Tested with AWS Linux `ami-0f2eac25772cd4e36`
 ```bash
 curl https://raw.githubusercontent.com/dinhanhhuy/mocker-k1s/main/mocker/install.sh | bash
 ```
