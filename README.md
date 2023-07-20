@@ -5,7 +5,7 @@
 ## Install on Centos
 Tested with AWS Linux `ami-0f2eac25772cd4e36`
 ```bash
-curl https://raw.githubusercontent.com/dinhanhhuy/mocker-k1s/main/mocker/install.sh | bash
+curl https://raw.githubusercontent.com/zalopay-oss/mocker-k1s/main/mocker/install.sh | bash
 ```
 
 ## Basic usage
